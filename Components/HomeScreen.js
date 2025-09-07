@@ -9,16 +9,16 @@ export default function HomeScreen({ navigation }) {
         </View>
         <View style={styles.buttonContainer}>
           <Pressable style={styles.button} onPress={() => navigation.navigate('Chest')}>
-            <Text style={styles.buttonText}>Chest</Text>
+            <Text style={styles.buttonText}>CHEST</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => navigation.navigate('Back')}>
-            <Text style={styles.buttonText}>Back</Text>
+            <Text style={styles.buttonText}>BACK</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => navigation.navigate('Legs')}>
-            <Text style={styles.buttonText}>Legs</Text>
+            <Text style={styles.buttonText}>LEGS</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => navigation.navigate('Abs&Arms')}>
-            <Text style={styles.buttonText}>Abs&Arms</Text>
+            <Text style={styles.buttonText}>ABS&ARMS</Text>
           </Pressable>
         </View>
       </View>
