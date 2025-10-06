@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { Text, View, Pressable} from 'react-native';
+import { Text, View, Pressable, FlatList, Alert} from 'react-native';
 import { styles } from "../Styles";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-export default function ChestDay() {
+export default function ChestDay({dates, setDates}) {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
-  const [dates, setDates] = useState([]);
 
   const onChange = (event, selectedDate) => {
     if (selectedDate) {
@@ -15,8 +14,16 @@ export default function ChestDay() {
   };
 
   const handleSave = () => {
-    setDates([date, ...dates]);
-    setShow(false);
+    const exists = dates.some(
+      (d) => d.toDateString() === date.toDateString()
+    );
+    
+    if (!exists) {
+      setDates([date, ...dates]);
+      setShow(false);
+    } else {
+      Alert.alert("Date already exists");
+    }
   }
 
   const showDatepicker = () => {
@@ -51,9 +58,24 @@ export default function ChestDay() {
       )}
 
       {!show && (
-        <Pressable style={styles.button} onPress={showDatepicker}>
-            <Text style={styles.buttonText}>PICK DATE</Text>
-      </Pressable> 
+        <View>
+          <Pressable style={styles.button} onPress={showDatepicker}>
+              <Text style={styles.buttonText}>PICK DATE</Text>
+          </Pressable> 
+          <FlatList
+            data={dates}
+            keyExtractor={(item) => item.toString()}
+            renderItem={({ item }) => (
+              <Pressable 
+                style={styles.button}
+                onPress={() => navigation.navigate("DateDetails", { date: item })}>
+                <Text style={styles.buttonText}>
+                  {formatDate(item)}
+                </Text>
+              </Pressable>
+            )}
+          />
+        </View>
       )}
     </View>
   );
