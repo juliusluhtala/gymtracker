@@ -27,5 +27,18 @@ export const styles = StyleSheet.create({
   buttonText: {
     fontSize:30,
     color: '#ffffffff'
+  },
+  deleteButton: {
+    alignItems: 'center',
+    backgroundColor: '#ff3f3fff',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginBottom: 50
+  },
+  dateList: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   }
 });

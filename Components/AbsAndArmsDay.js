@@ -27,6 +27,25 @@ export default function AbsAndArmsDay({dates, setDates}) {
     }
   }
 
+  // Delete date
+  const deleteDate = (selectedDate) => {
+    Alert.alert(
+      "Delete Date",
+      "Are you sure you want to delete the date?",
+      [
+        {text: "Cancel", style: "cancel"},
+        {text: "Delete", style: "destructive",
+          onPress: () => {
+            const newDates = dates.filter(
+              (d) => d.toDateString() !== selectedDate.toDateString()
+            );
+            setDates(newDates);
+          },
+        },
+      ]
+    );
+  }
+
   // Show date picker
   const showDatepicker = () => {
     setShow(true);
@@ -59,7 +78,6 @@ export default function AbsAndArmsDay({dates, setDates}) {
           </Pressable>
         </View>
       )}
-
       {!show && (
         <View>
           <Pressable style={styles.button} onPress={showDatepicker}>
@@ -69,13 +87,20 @@ export default function AbsAndArmsDay({dates, setDates}) {
             data={dates}
             keyExtractor={(item) => item.toString()}
             renderItem={({ item }) => (
-              <Pressable 
-                style={styles.button}
-                onPress={() => navigation.navigate("DateDetails", { date: item })}>
-                <Text style={styles.buttonText}>
-                  {formatDate(item)}
-                </Text>
-              </Pressable>
+              <View style={styles.dateList}>
+                  <Pressable 
+                    style={styles.button}
+                    onPress={() => navigation.navigate("DateDetails", { date: item })}>
+                    <Text style={styles.buttonText}>
+                      {formatDate(item)}
+                    </Text>
+                  </Pressable>
+                  <Pressable
+                    style={styles.deleteButton}
+                    onPress={() => deleteDate(item)}>
+                    <Text style={styles.buttonText}>DELETE</Text>
+                  </Pressable>
+                </View>
             )}
           />
         </View>
