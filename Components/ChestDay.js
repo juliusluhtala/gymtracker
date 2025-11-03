@@ -7,17 +7,18 @@ export default function ChestDay({dates, setDates}) {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
+  // Change current date to new date
   const onChange = (event, selectedDate) => {
     if (selectedDate) {
       setDate(selectedDate);
     }
   };
 
+  // Saving dates
   const handleSave = () => {
     const exists = dates.some(
       (d) => d.toDateString() === date.toDateString()
     );
-    
     if (!exists) {
       setDates([date, ...dates]);
       setShow(false);
@@ -26,10 +27,12 @@ export default function ChestDay({dates, setDates}) {
     }
   }
 
+  // Show date picker
   const showDatepicker = () => {
     setShow(true);
   };
 
+  // Formatting date
   const formatDate = (d) => {
     const day = d.getDate();
     const month = d.getMonth() + 1;
@@ -37,7 +40,7 @@ export default function ChestDay({dates, setDates}) {
     return `${day}.${month}.${year}`;
   };
 
-  console.log(dates);
+  console.log(dates); // CONSOLE LOG!!!!!!!!!!!!!!
 
   return (
     <View style={styles.container}>
@@ -56,7 +59,6 @@ export default function ChestDay({dates, setDates}) {
           </Pressable>
         </View>
       )}
-
       {!show && (
         <View>
           <Pressable style={styles.button} onPress={showDatepicker}>

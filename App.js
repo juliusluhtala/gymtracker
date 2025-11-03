@@ -27,16 +27,31 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Gym Tracker" component={HomeScreen} />
-        <Stack.Screen name="Chest">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Chest" >
           {(props) => (
             <ChestDay {...props} 
             dates={datesByScreen.ChestDay} 
             setDates={(newDates) => updateDates("ChestDay", newDates)} />)}
         </Stack.Screen> 
-        <Stack.Screen name="Back" component={BackDay} />
-        <Stack.Screen name="Legs" component={LegDay} />
-        <Stack.Screen name="Abs&Arms" component={AbsAndArmsDay} />
+        <Stack.Screen name="Back">
+          {(props) => (
+            <BackDay {...props} 
+            dates={datesByScreen.BackDay} 
+            setDates={(newDates) => updateDates("BackDay", newDates)} />)}
+        </Stack.Screen> 
+        <Stack.Screen name="Legs">
+          {(props) => (
+            <LegDay {...props} 
+            dates={datesByScreen.LegDay} 
+            setDates={(newDates) => updateDates("LegDay", newDates)} />)}
+          </Stack.Screen>
+        <Stack.Screen name="Abs&Arms">
+          {(props) => (
+            <AbsAndArmsDay {...props} 
+            dates={datesByScreen.AbsAndArmsDay} 
+            setDates={(newDates) => updateDates("AbsAndArmsDay", newDates)} />)}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

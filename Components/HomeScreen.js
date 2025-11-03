@@ -8,7 +8,7 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.titleText}>Choose Muscle Group</Text>
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.button} onPress={() => navigation.navigate('Chest')}>
+          <Pressable style={styles.button} onPress={() => navigation.navigate('Chest')} >
             <Text style={styles.buttonText}>CHEST</Text>
           </Pressable>
           <Pressable style={styles.button} onPress={() => navigation.navigate('Back')}>
