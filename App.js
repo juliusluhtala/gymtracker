@@ -8,7 +8,8 @@ import ChestDay from './Components/ChestDay'
 import BackDay from './Components/BackDay'
 import LegDay from './Components/LegDay'
 import AbsAndArmsDay from './Components/AbsAndArmsDay'
-import HomeScreen from './Components/HomeScreen';
+import HomeScreen from './Components/HomeScreen'
+import DateDetails from './Components/DateDetails'
 
 const Stack = createNativeStackNavigator();
 
@@ -99,6 +100,7 @@ export default function App() {
               dates={datesByScreen.AbsAndArmsDay} 
               setDates={(newDates) => updateDates("AbsAndArmsDay", newDates)} />)}
           </Stack.Screen>
+          <Stack.Screen name="DateDetails" component={DateDetails}/> 
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Text, View, Pressable, FlatList, Alert} from 'react-native';
+import { Text, View, Pressable, FlatList, Alert } from 'react-native';
 import { styles } from "../Styles";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
-export default function ChestDay({dates, setDates}) {
+export default function ChestDay({ dates, setDates, navigation }) {
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
@@ -33,8 +33,9 @@ export default function ChestDay({dates, setDates}) {
       "Delete Date",
       "Are you sure you want to delete the date?",
       [
-        {text: "Cancel", style: "cancel"},
-        {text: "Delete", style: "destructive",
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete", style: "destructive",
           onPress: () => {
             const newDates = dates.filter(
               (d) => d.toDateString() !== selectedDate.toDateString()
@@ -45,11 +46,6 @@ export default function ChestDay({dates, setDates}) {
       ]
     );
   }
-
-  // Show date picker
-  const showDatepicker = () => {
-    setShow(true);
-  };
 
   // Formatting date
   const formatDate = (d) => {
@@ -65,7 +61,7 @@ export default function ChestDay({dates, setDates}) {
     <View style={styles.container}>
       {show && (
         <View>
-          <Text style={{fontSize: 25, }}>{formatDate(date)}</Text>
+          <Text style={styles.pickerText}>{formatDate(date)}</Text>
           <DateTimePicker
             testID="dateTimePicker"
             value={date}
@@ -73,32 +69,32 @@ export default function ChestDay({dates, setDates}) {
             onChange={onChange}
             display="spinner">
           </DateTimePicker>
-          <Pressable style={styles.button} onPress={handleSave} >
-            <Text style={styles.buttonText}>SAVE DATE</Text>
+          <Pressable style={styles.saveButton} onPress={handleSave} >
+            <Text style={styles.dateListText}>SAVE</Text>
           </Pressable>
         </View>
       )}
       {!show && (
         <View>
-          <Pressable style={styles.button} onPress={showDatepicker}>
-              <Text style={styles.buttonText}>PICK DATE</Text>
-          </Pressable> 
+          <Pressable style={styles.button} onPress={() => setShow(true)}>
+            <Text style={styles.buttonText}>ADD DATE</Text>
+          </Pressable>
           <FlatList
             data={dates}
             keyExtractor={(item) => item.toString()}
             renderItem={({ item }) => (
               <View style={styles.dateList}>
-                <Pressable 
-                  style={styles.button}
-                  onPress={() => navigation.navigate("DateDetails", { date: item })}>
-                  <Text style={styles.buttonText}>
+                <Pressable
+                  style={styles.listButton}
+                  onPress={() => navigation.navigate('DateDetails')}>
+                  <Text style={styles.dateListText}>
                     {formatDate(item)}
                   </Text>
                 </Pressable>
                 <Pressable
                   style={styles.deleteButton}
                   onPress={() => deleteDate(item)}>
-                  <Text style={styles.buttonText}>DELETE</Text>
+                  <Text style={styles.deleteText}>X</Text>
                 </Pressable>
               </View>
             )}
