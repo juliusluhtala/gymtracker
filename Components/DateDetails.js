@@ -1,37 +1,74 @@
-import { Text, View, Pressable, FlatList, Alert, TextInput, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import { Text, View, Pressable, FlatList, Alert, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { styles } from "../Styles";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
 
-export default function DateDetails({ navigation }) {
+export default function DateDetails({ route, exercisesByScreen, updateExercises }) {
+  const { date, screenName } = route.params;
+
+  console.log("ROUTE PARAMS:", route.params);
+  console.log("SCREEN NAME:", screenName, "DATE:", date);
+
+  const dateKey = date.toISOString().split("T")[0];
+  const storedExercises = exercisesByScreen?.[screenName]?.[dateKey] || [];
+  const [exercises, setExercises] = useState(storedExercises);
+
+  // Save whenever exercises change
+  useEffect(() => {
+    updateExercises(screenName, dateKey, exercises);
+  }, [exercises]);
 
   const [show, setShow] = useState(false);
-  const [selectedExercise, setSelectedExercise] = useState("Bench Press");
+  const [selectedExercise, setSelectedExercise] = useState("");
   const [weight, setWeight] = useState("");
-  const [exercises, setExercises] = useState([]);
 
   // Preset exercises
-  const chestExercises = [
-    "Chest Press",
-    "Bench Press Barbell",
-    "Bench Press Machine",
-    "Bench Press Smith",
-    "Bench Press Dumbbell",
-    "Incline Bench Press Barbell",
-    "Incline Bench Press Machine",
-    "Incline Bench Press Smith",
-    "Incline Bench Press Dumbbell",
-    "Pec Fly"
-  ];
+  const exerciseGroups = {
+    Chest: [
+      "Chest Press",
+      "Bench Press",
+      "Incline Bench Press",
+      "Pec Fly"
+    ],
+
+    Back: [
+      "Lat Pulldown",
+      "Cable Row",
+      "Lower Back",
+      "Fly"
+    ],
+
+    Legs: [
+      "Squat",
+      "Leg Press",
+      "Leg Extension",
+      "Leg Curl",
+      "Calf Raise"
+    ],
+
+    "Abs&Arms": [
+      "Bicep Curl",
+      "Hammer Curl",
+      "Tricep Pushdown",
+      "Ab crunch",
+      "Leg raises"
+    ]
+  };
+
+  const exerciseList = screenName ? exerciseGroups[screenName] : [];
 
   // Save exercise
   const addExercise = () => {
+    if (!weight) return;
+
     const newEntry = {
       exercise: selectedExercise,
       weight: Number(weight)
     };
+
     setExercises(prev => [...prev, newEntry]);
     setWeight("");
+    setSelectedExercise("");
     setShow(false);
   };
 
@@ -41,17 +78,20 @@ export default function DateDetails({ navigation }) {
       "Delete Exercise",
       "Are you sure you want to delete the exercise?",
       [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete", style: "destructive",
+        {text: "Cancel", style: "cancel"},
+        {text: "Delete", style: "destructive",
           onPress: () => {
-            setExercises((prev) =>
-              prev.filter((e) => !(e.exercise === exerciseObj.exercise && e.weight === exerciseObj.weight)));
-          },
-        },
+            const updated = exercises.filter(
+              (e) =>
+                !(e.exercise === exerciseObj.exercise &&
+                  e.weight === exerciseObj.weight)
+            );
+            setExercises(updated);
+          }
+        }
       ]
     );
-  }
+  };
 
   console.log(exercises);
 
@@ -71,7 +111,7 @@ export default function DateDetails({ navigation }) {
                 <Picker
                   selectedValue={selectedExercise}
                   onValueChange={(itemValue) => setSelectedExercise(itemValue)}>
-                  {chestExercises.map((ex) => (
+                  {exerciseList.map((ex) => (
                     <Picker.Item key={ex} label={ex} value={ex} />
                   ))}
                 </Picker>
@@ -81,14 +121,17 @@ export default function DateDetails({ navigation }) {
                   value={weight}
                   onChangeText={setWeight} />
                 <Pressable style={styles.saveButton} onPress={addExercise}>
-                  <Text style={styles.dateListText}>SAVE</Text>
+                  <Text style={styles.listText}>SAVE</Text>
+                </Pressable>
+                <Pressable style={styles.cancelButton} onPress={() => { setShow(false); setWeight(""); setSelectedExercise(exerciseList[0] || ""); }}>
+                  <Text style={styles.cancelButtonText}>CANCEL</Text>
                 </Pressable>
               </View>
             )}
             {!show && (
               <View>
                 <Pressable style={styles.addButton} onPress={() => setShow(true)}>
-                  <Text style={styles.dateListText}>ADD EXERCISE</Text>
+                  <Text style={styles.addButtonText}>ADD EXERCISE</Text>
                 </Pressable>
                 <FlatList
                   data={exercises}
@@ -96,7 +139,7 @@ export default function DateDetails({ navigation }) {
                   renderItem={({ item }) => (
                     <View>
                       <Pressable style={styles.listButton}>
-                        <Text style={styles.exerciseListText}>
+                        <Text style={styles.listText}>
                           {item.exercise}
                         </Text>
                         <Text style={{fontSize: 20}}>{item.weight}kg</Text>

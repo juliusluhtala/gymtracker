@@ -3,10 +3,16 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffffff',
+    backgroundColor: '#f5f5f5ff',
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: 80
+  },
+  dateContainer: {
+    flex: 1,
+    backgroundColor: '#f1f1f1ff',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
   },
   titleText: {
     fontSize: 32,
@@ -17,10 +23,22 @@ export const styles = StyleSheet.create({
     width: '80%'
   },
   saveButton: {
+    width: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 100,
     marginHorizontal: "auto"
+  },
+  cancelButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 130,
+    marginHorizontal: "auto"
+  },
+  cancelButtonText: {
+    fontSize:30,
+    fontWeight: 'bold',
+    color: '#ff0000ff',
+    paddingTop: 10
   },
   button: {
     alignItems: 'center',
@@ -35,38 +53,42 @@ export const styles = StyleSheet.create({
     width: 300,
     marginHorizontal: "auto",
     marginVertical: 20,
-    textDecorationLine: 'underline'
+    backgroundColor: '#3f8cffff'
+  },
+  addButtonText: {
+    fontSize:35,
+    fontWeight: 'bold',
+    color: '#ffffffff',
   },
   listButton: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: "auto",
     marginHorizontal: "auto",
     marginVertical: 20
   },
-  dateListText: {
+  listText: {
     fontSize:30,
     fontWeight: 'bold',
     color: '#000000ff'
   },
   exerciseListText: {
-    fontSize:25,
+    fontSize:30,
     fontWeight: 'bold',
     color: '#000000ff'
   },
   deleteText: {
     fontSize:30,
-    fontWeight: 'bold',
     color: '#ff0000ff'
   },
   buttonText: {
+    fontWeight: 'bold',
     fontSize:30,
     color: '#ffffffff'
   },
   deleteButton: {
     alignItems: 'center',
-    marginVertical: 1,
-    marginHorizontal: 1
+    marginVertical: 5,
+    marginHorizontal: 10
   },
   dateList: {
     flexDirection: 'row',
@@ -80,6 +102,12 @@ export const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center'
+  },
+  datePickerText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingTop: "50%"
   },
   textInput: {
     borderWidth: 1,

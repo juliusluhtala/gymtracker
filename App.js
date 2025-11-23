@@ -21,10 +21,14 @@ export default function App() {
     AbsAndArmsDay: []
   });
 
+  const [exercisesByScreen, setExercisesByScreen] = useState ({});
+
   // Load data from storage
   useEffect(() => {
-    const loadData = async () => {
+    const loadAll = async () => {
       try {
+
+        // Load dates
         const stored = await AsyncStorage.getItem('DATES_BY_SCREEN');
         if (stored) {
           const parsed = JSON.parse(stored);
@@ -36,38 +40,49 @@ export default function App() {
               arr.map((d) => new Date(d)),
             ])
           );
-
           setDatesByScreen(restored);
         }
+
+        // Load exercises
+        const storedExercises = await AsyncStorage.getItem('EXERCISES_BY_SCREEN');
+        if (storedExercises) {
+          setExercisesByScreen(JSON.parse(storedExercises));
+        }
+
       } catch (e) {
-        console.error('Error loading saved dates', e);
+        console.error('Error loading data', e);
       }
     };
 
-    loadData();
+    loadAll();
   }, []);
 
-  // Save whenever data changes
+  // Save dates
   useEffect(() => {
-    const saveData = async () => {
-      try {
-        await AsyncStorage.setItem(
-          'DATES_BY_SCREEN',
-          JSON.stringify(datesByScreen)
-        );
-      } catch (e) {
-        console.error('Error saving dates', e);
-      }
-    };
-
-    saveData();
+    AsyncStorage.setItem("DATES_BY_SCREEN", JSON.stringify(datesByScreen));
   }, [datesByScreen]);
+
+  // Save exercises
+    useEffect(() => {
+    AsyncStorage.setItem("EXERCISES_BY_SCREEN", JSON.stringify(exercisesByScreen));
+  }, [exercisesByScreen]);
 
   // Update dates for each screen
   const updateDates = (screen, newDates) => {
      setDatesByScreen((prev) => ({
        ...prev,
        [screen]: newDates,
+    }));
+  };
+
+  // Update exercises for each screen
+  const updateExercises = (screen, dateKey, exercises) => {
+    setExercisesByScreen(prev => ({
+      ...prev,
+      [screen]: {
+        ...(prev[screen] || {}),
+        [dateKey]: exercises
+      }
     }));
   };
 
@@ -78,29 +93,35 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Chest" >
             {(props) => (
-              <ChestDay {...props} 
-              dates={datesByScreen.ChestDay} 
-              setDates={(newDates) => updateDates("ChestDay", newDates)} />)}
-          </Stack.Screen> 
+              <ChestDay {...props}
+                dates={datesByScreen.ChestDay}
+                setDates={(newDates) => updateDates("ChestDay", newDates)} />)}
+          </Stack.Screen>
           <Stack.Screen name="Back">
             {(props) => (
-              <BackDay {...props} 
-              dates={datesByScreen.BackDay} 
-              setDates={(newDates) => updateDates("BackDay", newDates)} />)}
-          </Stack.Screen> 
+              <BackDay {...props}
+                dates={datesByScreen.BackDay}
+                setDates={(newDates) => updateDates("BackDay", newDates)} />)}
+          </Stack.Screen>
           <Stack.Screen name="Legs">
             {(props) => (
-              <LegDay {...props} 
-              dates={datesByScreen.LegDay} 
-              setDates={(newDates) => updateDates("LegDay", newDates)} />)}
-            </Stack.Screen>
+              <LegDay {...props}
+                dates={datesByScreen.LegDay}
+                setDates={(newDates) => updateDates("LegDay", newDates)} />)}
+          </Stack.Screen>
           <Stack.Screen name="Abs&Arms">
             {(props) => (
-              <AbsAndArmsDay {...props} 
-              dates={datesByScreen.AbsAndArmsDay} 
-              setDates={(newDates) => updateDates("AbsAndArmsDay", newDates)} />)}
+              <AbsAndArmsDay {...props}
+                dates={datesByScreen.AbsAndArmsDay}
+                setDates={(newDates) => updateDates("AbsAndArmsDay", newDates)} />)}
           </Stack.Screen>
-          <Stack.Screen name="DateDetails" component={DateDetails}/> 
+          <Stack.Screen name="DateDetails">
+            {(props) => (
+              <DateDetails
+                {...props}
+                exercisesByScreen={exercisesByScreen}
+                updateExercises={updateExercises} />)}
+          </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

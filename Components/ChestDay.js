@@ -33,9 +33,8 @@ export default function ChestDay({ dates, setDates, navigation }) {
       "Delete Date",
       "Are you sure you want to delete the date?",
       [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete", style: "destructive",
+        {text: "Cancel", style: "cancel"},
+        {text: "Delete", style: "destructive",
           onPress: () => {
             const newDates = dates.filter(
               (d) => d.toDateString() !== selectedDate.toDateString()
@@ -58,49 +57,58 @@ export default function ChestDay({ dates, setDates, navigation }) {
   console.log(dates); // CONSOLE LOG!!!!!!!!!!!!!!
 
   return (
-    <View style={styles.container}>
-      {show && (
-        <View>
-          <Text style={styles.pickerText}>{formatDate(date)}</Text>
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode="date"
-            onChange={onChange}
-            display="spinner">
-          </DateTimePicker>
-          <Pressable style={styles.saveButton} onPress={handleSave} >
-            <Text style={styles.dateListText}>SAVE</Text>
-          </Pressable>
+    <FlatList
+      data={dates}
+      keyExtractor={(item) => item.toString()}
+      ListHeaderComponent={
+        <View style={styles.dateContainer}>
+          {show && (
+            <View>
+              <Text style={styles.datePickerText}>{formatDate(date)}</Text>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode="date"
+                onChange={onChange}
+                display="spinner">
+              </DateTimePicker>
+              <Pressable style={styles.saveButton} onPress={handleSave} >
+                <Text style={styles.listText}>SAVE</Text>
+              </Pressable>
+              <Pressable style={styles.cancelButton} onPress={() => setShow(false)}>
+                <Text style={styles.cancelButtonText}>CANCEL</Text>
+              </Pressable>
+            </View>
+          )}
+          {!show && (
+            <View>
+              <Pressable style={styles.addButton} onPress={() => setShow(true)}>
+                <Text style={styles.addButtonText}>ADD DATE</Text>
+              </Pressable>
+              <FlatList
+                data={dates}
+                keyExtractor={(item) => item.toString()}
+                renderItem={({ item }) => (
+                  <View style={styles.dateList}>
+                    <Pressable
+                      style={styles.listButton}
+                      onPress={() => navigation.navigate('DateDetails', { 
+                        date: item,
+                        screenName: "Chest" })}>
+                      <Text style={styles.listText}>
+                        {formatDate(item)}
+                      </Text>
+                      <Pressable style={styles.deleteButton} onPress={() => deleteDate(item)}>
+                        <Text style={styles.deleteText}>X</Text>
+                      </Pressable>
+                    </Pressable>
+                  </View>
+                )}
+              />
+            </View>
+          )}
         </View>
-      )}
-      {!show && (
-        <View>
-          <Pressable style={styles.button} onPress={() => setShow(true)}>
-            <Text style={styles.buttonText}>ADD DATE</Text>
-          </Pressable>
-          <FlatList
-            data={dates}
-            keyExtractor={(item) => item.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.dateList}>
-                <Pressable
-                  style={styles.listButton}
-                  onPress={() => navigation.navigate('DateDetails')}>
-                  <Text style={styles.dateListText}>
-                    {formatDate(item)}
-                  </Text>
-                </Pressable>
-                <Pressable
-                  style={styles.deleteButton}
-                  onPress={() => deleteDate(item)}>
-                  <Text style={styles.deleteText}>X</Text>
-                </Pressable>
-              </View>
-            )}
-          />
-        </View>
-      )}
-    </View>
+      }
+    />
   );
 }
