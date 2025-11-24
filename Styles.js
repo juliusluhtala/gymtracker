@@ -3,10 +3,9 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5ff',
+    backgroundColor: '#f1f1f1ff',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingTop: 80
   },
   dateContainer: {
     flex: 1,
@@ -17,10 +16,31 @@ export const styles = StyleSheet.create({
   titleText: {
     fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 100
+    marginBottom: 80,
+    marginTop: 40,
+    marginHorizontal: "auto"
   },
-  buttonContainer: {
-    width: '80%'
+  mapButton: {
+    backgroundColor: '#3fff5fff',
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginTop: 30,
+    width: 70,
+    marginHorizontal: "auto",
+    alignItems: 'center'
+  },
+  mapButtonText: {
+    fontSize:20,
+    fontWeight: 'bold',
+    color: '#3f3f3fff',
+  },
+  closeMapButton: {
+    marginTop: 20,
+    marginBottom: 20,
+    width: 90,
+    marginHorizontal: "auto",
+    alignItems: 'center'
   },
   saveButton: {
     width: 100,
@@ -44,9 +64,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#3f8cffff',
+    width: 350,
     borderRadius: 5,
     paddingVertical: 10,
     marginBottom: 50,
+    marginHorizontal: "auto"
   },
   addButton: {
     alignItems: 'center',

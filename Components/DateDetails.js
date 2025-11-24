@@ -24,35 +24,10 @@ export default function DateDetails({ route, exercisesByScreen, updateExercises 
 
   // Preset exercises
   const exerciseGroups = {
-    Chest: [
-      "Chest Press",
-      "Bench Press",
-      "Incline Bench Press",
-      "Pec Fly"
-    ],
-
-    Back: [
-      "Lat Pulldown",
-      "Cable Row",
-      "Lower Back",
-      "Fly"
-    ],
-
-    Legs: [
-      "Squat",
-      "Leg Press",
-      "Leg Extension",
-      "Leg Curl",
-      "Calf Raise"
-    ],
-
-    "Abs&Arms": [
-      "Bicep Curl",
-      "Hammer Curl",
-      "Tricep Pushdown",
-      "Ab crunch",
-      "Leg raises"
-    ]
+    Chest: ["Chest Press", "Bench Press", "Incline Bench Press", "Pec Fly"],
+    Back: ["Lat Pulldown", "Cable Row", "Lower Back", "Fly"],
+    Legs: ["Squat", "Leg Press", "Leg Extension", "Leg Curl", "Calf Raise"],
+    "Abs&Arms": ["Bicep Curl", "Hammer Curl", "Tricep Pushdown", "Ab crunch", "Leg raises"]
   };
 
   const exerciseList = screenName ? exerciseGroups[screenName] : [];
@@ -99,7 +74,7 @@ export default function DateDetails({ route, exercisesByScreen, updateExercises 
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={80}>
+      keyboardVerticalOffset={90}>
       <FlatList
         data={exercises}
         keyExtractor={(item, index) => index.toString()}
