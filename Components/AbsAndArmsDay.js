@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Text, View, Pressable, FlatList, Alert} from 'react-native';
+import { Text, View, Pressable, FlatList, Alert } from 'react-native';
 import { styles } from "../Styles";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -54,8 +54,6 @@ export default function AbsAndArmsDay({ dates, setDates, navigation }) {
     return `${day}.${month}.${year}`;
   };
 
-  console.log(dates); // CONSOLE LOG!!!!!!!!!!!!!!
-
   return (
     <FlatList
       data={dates}
@@ -94,7 +92,8 @@ export default function AbsAndArmsDay({ dates, setDates, navigation }) {
                       style={styles.listButton}
                       onPress={() => navigation.navigate('DateDetails', {
                         date: item,
-                        screenName: "Abs&Arms"})}>
+                        screenName: "Abs&Arms"
+                      })}>
                       <Text style={styles.listText}>
                         {formatDate(item)}
                       </Text>

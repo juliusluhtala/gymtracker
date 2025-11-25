@@ -54,8 +54,6 @@ export default function LegDay({ dates, setDates, navigation }) {
     return `${day}.${month}.${year}`;
   };
 
-  console.log(dates); // CONSOLE LOG!!!!!!!!!!!!!!
-
   return (
     <FlatList
       data={dates}

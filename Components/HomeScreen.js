@@ -7,9 +7,9 @@ import * as Location from 'expo-location';
 export default function HomeScreen({ navigation }) {
   const [show, setShow] = useState(false);
   const [region, setRegion] = useState({
-    latitude: 60.200692,
-    longitude: 24.934302,
-    latitudeDelta: 0.0322,
+    latitude: 60.180692,
+    longitude: 24.936302,
+    latitudeDelta: 0.0722,
     longitudeDelta: 0.0221,
   })
   const [location, setLocation] = useState(null);

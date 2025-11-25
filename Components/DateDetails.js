@@ -5,10 +5,6 @@ import { Picker } from '@react-native-picker/picker';
 
 export default function DateDetails({ route, exercisesByScreen, updateExercises }) {
   const { date, screenName } = route.params;
-
-  console.log("ROUTE PARAMS:", route.params);
-  console.log("SCREEN NAME:", screenName, "DATE:", date);
-
   const dateKey = date.toISOString().split("T")[0];
   const storedExercises = exercisesByScreen?.[screenName]?.[dateKey] || [];
   const [exercises, setExercises] = useState(storedExercises);
@@ -30,15 +26,18 @@ export default function DateDetails({ route, exercisesByScreen, updateExercises 
     "Abs&Arms": ["Bicep Curl", "Hammer Curl", "Tricep Pushdown", "Ab crunch", "Leg raises"]
   };
 
-  const exerciseList = screenName ? exerciseGroups[screenName] : [];
+  const exerciseList =  exerciseGroups[screenName] ?? [];
 
   // Save exercise
   const addExercise = () => {
     if (!weight) return;
 
+    const parsedWeight = parseFloat(weight.replace(",", "."));
+    if (isNaN(parsedWeight)) return;
+
     const newEntry = {
       exercise: selectedExercise,
-      weight: Number(weight)
+      weight: parsedWeight,
     };
 
     setExercises(prev => [...prev, newEntry]);
@@ -59,7 +58,7 @@ export default function DateDetails({ route, exercisesByScreen, updateExercises 
             const updated = exercises.filter(
               (e) =>
                 !(e.exercise === exerciseObj.exercise &&
-                  e.weight === exerciseObj.weight)
+                  Number(e.weight) === Number(exerciseObj.weight))
             );
             setExercises(updated);
           }
@@ -67,8 +66,6 @@ export default function DateDetails({ route, exercisesByScreen, updateExercises 
       ]
     );
   };
-
-  console.log(exercises);
 
   return (
     <KeyboardAvoidingView
@@ -117,7 +114,7 @@ export default function DateDetails({ route, exercisesByScreen, updateExercises 
                         <Text style={styles.listText}>
                           {item.exercise}
                         </Text>
-                        <Text style={{fontSize: 20}}>{item.weight}kg</Text>
+                        <Text style={{fontSize: 20}}>{item.weight.toString().replace(".", ",")}kg</Text>
                         <Pressable style={styles.deleteButton} onPress={() => deleteExercise(item)}>
                           <Text style={styles.deleteText}>X</Text>
                         </Pressable>
